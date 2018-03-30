@@ -1,5 +1,5 @@
-export interface Page {
-    rows: any[];
+export interface Page<T> {
+    rows: T[];
     totals: {
         count: number;
     };
@@ -34,9 +34,9 @@ export declare class Sql {
     private convertTypesOnReading(rows, fields);
     insert(): Promise<number>;
     update(): Promise<void>;
-    page(request: PageRequest, totalAggregations?: {
+    page<T>(request: PageRequest, totalAggregations?: {
         count: string;
         [x: string]: string;
-    }): Promise<Page>;
+    }): Promise<Page<T>>;
 }
 export declare function sql(parts: any, ...params: any[]): Sql;

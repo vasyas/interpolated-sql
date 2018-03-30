@@ -1,5 +1,5 @@
-export interface Page {
-    rows: any[]
+export interface Page<T> {
+    rows: T[]
     totals: {
         count: number
     }
@@ -173,7 +173,7 @@ export class Sql {
         await connection.query(this.getQuery(), this.getQueryParams())
     }
 
-    async page(request: PageRequest, totalAggregations: { count: string, [x: string]: string } = { count: "count(*)" }): Promise<Page> {
+    async page<T>(request: PageRequest, totalAggregations: { count: string, [x: string]: string } = { count: "count(*)" }): Promise<Page<T>> {
         const { sort, order, size, page } = request
 
         // TODO parallel?
