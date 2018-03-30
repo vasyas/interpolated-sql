@@ -5,10 +5,10 @@ export interface Page<T> {
     };
 }
 export interface PageRequest {
-    page: number;
-    size: number;
-    sort: string;
-    order: string;
+    page?: number;
+    size?: number;
+    sort?: string;
+    order?: string;
 }
 export declare type ConnectionSupplier = () => any;
 export declare class Sql {
