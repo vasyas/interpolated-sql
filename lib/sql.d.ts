@@ -34,9 +34,9 @@ export declare class Sql {
     private convertTypesOnReading(rows, fields);
     insert(): Promise<number>;
     update(): Promise<void>;
-    page<T>(request: PageRequest, totalAggregations?: {
+    page(request: PageRequest, totalAggregations?: {
         count: string;
         [x: string]: string;
-    }): Promise<Page<T>>;
+    }): Promise<Page<any>>;
 }
 export declare function sql(parts: any, ...params: any[]): Sql;

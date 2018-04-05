@@ -173,7 +173,7 @@ export class Sql {
         await connection.query(this.getQuery(), this.getQueryParams())
     }
 
-    async page<T>(request: PageRequest, totalAggregations: { count: string, [x: string]: string } = { count: "count(*)" }): Promise<Page<T>> {
+    async page(request: PageRequest, totalAggregations: { count: string, [x: string]: string } = { count: "count(*)" }): Promise<Page<any>> {
         const { sort, order, size, page } = request
 
         // TODO parallel?
