@@ -125,7 +125,9 @@ export class Sql {
     async all(): Promise<any[]> {
         const connection = await this.connectionSupplier()
 
-        // console.log(interp(this.parts, ...this.params))
+        if (trace) {
+            console.log(interp(this.parts, ...this.params))
+        }
 
         const [ rows, fields ] = await connection.execute(this.getQuery(), this.getQueryParams())
 
@@ -166,7 +168,9 @@ export class Sql {
     }
 
     async update() {
-        // console.log(interp(this.parts, ...this.params))
+        if (trace) {
+            console.log(interp(this.parts, ...this.params))
+        }
 
         const connection = await this.connectionSupplier()
 
@@ -202,3 +206,5 @@ function interp(parts, ...params) {
         return accumulator + params[i - 1] + part
     })
 }
+
+export let trace = false
