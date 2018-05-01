@@ -1,8 +1,10 @@
-export interface Page<T> {
-    rows: T[]
-    totals: {
-        count: number
-    }
+export interface Count {
+    count: number
+}
+
+export interface Page<R, T extends Count = Count> {
+    rows: R[]
+    totals: T
 }
 
 export interface PageRequest {
