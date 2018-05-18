@@ -164,7 +164,7 @@ export class Sql {
     async insert(): Promise<number> {
         const connection = await this.connectionSupplier()
 
-        const [ r ] = await connection.query(this.getQuery(), this.getQueryParams())
+        const [ r ] = await connection.execute(this.getQuery(), this.getQueryParams())
 
         return r.insertId
     }
@@ -176,7 +176,7 @@ export class Sql {
 
         const connection = await this.connectionSupplier()
 
-        await connection.query(this.getQuery(), this.getQueryParams())
+        await connection.execute(this.getQuery(), this.getQueryParams())
     }
 
     async page(request: PageRequest, totalAggregations: { count: string, [x: string]: string } = { count: "count(*)" }): Promise<Page<any>> {
@@ -204,8 +204,16 @@ export function sql(parts, ...params) {
 }
 
 function interp(parts, ...params) {
+    function str(o) {
+        if (typeof o == "object" && !(o instanceof Date)) {
+            return JSON.stringify(o)
+        }
+
+        return "" + o
+    }
+
     return parts.reduce((accumulator, part, i) => {
-        return accumulator + params[i - 1] + part
+        return accumulator + params[i - 1] + str(part)
     }).trim()
 }
 

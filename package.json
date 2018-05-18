@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "author": "Vasyl Stashuk <vasyl@stashuk.com>",
   "license": "ISC",
-  "main": "lib/sql.js",
-  "types": "lib/sql.d.ts",
+  "main": "lib/src/sql.js",
+  "types": "lib/src/sql.d.ts",
   "scripts": {
     "prepublish": "npm run build",
-    "build": "tsc"
+    "build": "tsc",
+    "test": "mocha -r ts-node/register ./test/**/*.ts"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^9.4.6",
+    "chai": "^4.1.2",
+    "mocha": "^5.1.1",
+    "mysql2": "^1.5.3",
     "ts-node": "^5.0.0",
     "tslint": "^5.9.1",
     "tslint-eslint-rules": "^5.1.0",

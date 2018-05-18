@@ -1,56 +1,90 @@
-import { setup, TestData } from '../../testData'
-import * as db from '../../../server/db'
-import { expect } from 'chai'
+import { expect } from "chai"
+import { Sql, enableTrace } from "../src/sql"
 
-const data: TestData = {
-    partner: {
-        chargeBox: {}
-    }
+const mysql = require("mysql2/promise")
+
+// create databse test
+
+let connection
+
+function exec(parts, ...params) {
+    return new Sql(parts, params, () => connection)
 }
 
-describe('DB type convert', () => {
-    beforeEach(setup(data))
+// enableTrace(true)
 
-    it('tinyint to boolean on reading', async () => {
-        const confirmStart = await db.exec`
-            select confirmStart from charge_box
-        `.scalar()
+describe("DB type convert", () => {
+    beforeEach(async () => {
+        connection = await mysql.createConnection({
+            host: "localhost",
+            user: "root",
+            database: "test",
+        })
 
-        expect(confirmStart).eql(false)
+        await exec("drop table test").update()
+        await exec("create table test (boolean tinyint(1), jsonField json)").update()
+        await exec("insert into test set boolean = 0, jsonField = '{ \"key\": \"value\" }'").update()
     })
 
-    it('boolean to tinyint on writing', async () => {
-        await db.exec`
-            update charge_box set confirmStart=${ true }
+    afterEach(() => {
+        connection.end()
+    })
+
+    it("tinyint to boolean on reading", async () => {
+        const val = await exec`
+            select boolean from test
+        `.scalar()
+
+        expect(val).eql(false)
+    })
+
+    it("boolean to tinyint on writing", async () => {
+        await exec`
+            update test set boolean=${ true }
         `.update()
 
-        const confirmStart = await db.exec`
-            select confirmStart from charge_box
+        const val = await exec`
+            select boolean from test
         `.scalar()
 
-        expect(confirmStart).eql(true)
+        expect(val).eql(true)
     })
 
-    it('constants to boolean', async () => {
-        const c1 = await db.exec`
-            select if (charge_box_pk > 0, TRUE, FALSE) from charge_box
+    it("constants to boolean", async () => {
+        const c1 = await exec`
+            select if (1 > 0, TRUE, FALSE) from test
         `.scalar()
 
         expect(c1).eql(true)
 
-        const c2 = await db.exec`
-            select if (charge_box_pk > 0, 1, 0) from charge_box
+        const c2 = await exec`
+            select if (1 > 0, 1, 0) from test
         `.scalar()
 
         expect(c2).eql(true)
     })
 
     // large constants will be deduced to larger values
-    it('int constants to boolean', async () => {
-        const constant = await db.exec`
-            select if (charge_box_pk > 1, 1, 1000) from charge_box
+    it("int constants to boolean", async () => {
+        const constant = await exec`
+            select if (1 > 0, 1, 1000) from test
         `.scalar()
 
         expect(constant).eql(1)
+    })
+
+    it("read json object", async () => {
+        const obj = await exec`
+            select jsonField from test
+        `.scalar()
+
+        expect(typeof obj).eql("object")
+    })
+
+    it("writes json object", async () => {
+        await exec`
+            update test
+            set jsonField = ${{ key: "value" }}
+        `.update()
     })
 })
