@@ -29,8 +29,8 @@ export declare class Sql {
     }>;
     one(def?: any): Promise<any>;
     scalar(): Promise<any>;
-    private getQueryParams();
-    private getQuery();
+    private prepareQueryParams();
+    private prepareQuery();
     all(): Promise<any[]>;
     private convertTypesOnReading(rows, fields);
     insert(): Promise<number>;

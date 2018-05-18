@@ -115,12 +115,12 @@ export class Sql {
     }
 
     // convert undefined to nulls
-    private getQueryParams() {
+    private prepareQueryParams() {
         return this.params
             .map(p => typeof p == "undefined" ? null : p)
 
     }
-    private getQuery() {
+    private prepareQuery() {
         return this.parts.join("?").trim()
     }
 
@@ -131,7 +131,7 @@ export class Sql {
             console.log(interp(this.parts, ...this.params))
         }
 
-        const [ rows, fields ] = await connection.execute(this.getQuery(), this.getQueryParams())
+        const [ rows, fields ] = await connection.query(this.prepareQuery(), this.prepareQueryParams())
 
         this.convertTypesOnReading(rows, fields)
 
@@ -164,7 +164,7 @@ export class Sql {
     async insert(): Promise<number> {
         const connection = await this.connectionSupplier()
 
-        const [ r ] = await connection.execute(this.getQuery(), this.getQueryParams())
+        const [ r ] = await connection.query(this.prepareQuery(), this.prepareQueryParams())
 
         return r.insertId
     }
@@ -176,7 +176,7 @@ export class Sql {
 
         const connection = await this.connectionSupplier()
 
-        await connection.execute(this.getQuery(), this.getQueryParams())
+        await connection.query(this.prepareQuery(), this.prepareQueryParams())
     }
 
     async page(request: PageRequest, totalAggregations: { count: string, [x: string]: string } = { count: "count(*)" }): Promise<Page<any>> {
