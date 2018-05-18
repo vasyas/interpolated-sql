@@ -206,7 +206,7 @@ export function sql(parts, ...params) {
 function interp(parts, ...params) {
     return parts.reduce((accumulator, part, i) => {
         return accumulator + params[i - 1] + part
-    })
+    }).trim()
 }
 
 let trace = false
