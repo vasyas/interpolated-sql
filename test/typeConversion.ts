@@ -84,7 +84,7 @@ describe("DB type convert", () => {
     it("supports set object", async () => {
         await exec`
             update test
-            set ${{ boolean: 1 }}
+            set ${{ jsonField: "{}" }}
         `.update()
     })
 

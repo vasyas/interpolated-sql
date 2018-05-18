@@ -131,7 +131,7 @@ export class Sql {
             console.log(interp(this.parts, ...this.params))
         }
 
-        const [ rows, fields ] = await connection.query(this.prepareQuery(), this.prepareQueryParams())
+        const [ rows, fields ] = await connection.execute(this.prepareQuery(), this.prepareQueryParams())
 
         this.convertTypesOnReading(rows, fields)
 
