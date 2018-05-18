@@ -209,4 +209,8 @@ function interp(parts, ...params) {
     })
 }
 
-export let trace = false
+let trace = false
+
+export function enableTrace(enabled) {
+    trace = enabled
+}

@@ -41,4 +41,4 @@ export declare class Sql {
     }): Promise<Page<any>>;
 }
 export declare function sql(parts: any, ...params: any[]): Sql;
-export declare let trace: boolean;
+export declare function enableTrace(enabled: any): void;
