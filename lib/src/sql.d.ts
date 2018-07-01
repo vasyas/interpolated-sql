@@ -34,7 +34,7 @@ export declare class Sql {
     all(): Promise<any[]>;
     private convertTypesOnReading(rows, fields);
     insert(): Promise<number>;
-    update(): Promise<void>;
+    update(): Promise<number>;
     page(request: PageRequest, totalAggregations?: {
         count: string;
         [x: string]: string;

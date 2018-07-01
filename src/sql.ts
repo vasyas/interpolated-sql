@@ -169,14 +169,16 @@ export class Sql {
         return r.insertId
     }
 
-    async update() {
+    async update(): Promise<number> {
         if (trace) {
             console.log(interp(this.parts, ...this.params))
         }
 
         const connection = await this.connectionSupplier()
 
-        await connection.query(this.prepareQuery(), this.prepareQueryParams())
+        const [ r ] = await connection.query(this.prepareQuery(), this.prepareQueryParams())
+
+        return r.changedRows
     }
 
     async page(request: PageRequest, totalAggregations: { count: string, [x: string]: string } = { count: "count(*)" }): Promise<Page<any>> {

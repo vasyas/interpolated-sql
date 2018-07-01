@@ -1,6 +1,6 @@
 {
   "name": "interpolated-sql",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Vasyl Stashuk <vasyl@stashuk.com>",
   "license": "ISC",
   "main": "lib/src/sql.js",
