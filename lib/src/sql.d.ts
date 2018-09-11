@@ -39,7 +39,7 @@ export declare class Sql {
         count: string;
         [x: string]: string;
     }): Promise<Page<any>>;
-    prevNextIds(s: Sql, id: number): Promise<Array<{
+    prevNextIds(id: number): Promise<Array<{
         id: number;
         rowNum: number;
     }>>;

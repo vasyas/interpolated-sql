@@ -200,8 +200,8 @@ export class Sql {
         return { rows, totals }
     }
 
-    async prevNextIds(s: Sql, id: number): Promise<Array<{ id: number, rowNum: number }>> {
-        const rowNums = s.wrap(sql`
+    async prevNextIds(id: number): Promise<Array<{ id: number, rowNum: number }>> {
+        const rowNums = this.wrap(sql`
             select id, rowNum
             from (
                 select @rowNum := @rowNum + 1 as rowNum, id
