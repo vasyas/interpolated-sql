@@ -39,6 +39,10 @@ export declare class Sql {
         count: string;
         [x: string]: string;
     }): Promise<Page<any>>;
+    prevNextIds(s: Sql, id: number): Promise<Array<{
+        id: number;
+        rowNum: number;
+    }>>;
 }
 export declare function sql(parts: any, ...params: any[]): Sql;
 export declare function enableTrace(enabled: any): void;

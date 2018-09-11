@@ -199,6 +199,45 @@ export class Sql {
 
         return { rows, totals }
     }
+
+    async prevNextIds(s: Sql, id: number): Promise<Array<{ id: number, rowNum: number }>> {
+        const rowNums = s.wrap(sql`
+            select id, rowNum
+            from (
+                select @rowNum := @rowNum + 1 as rowNum, id
+                from 
+                    (select @rowNum := 0) as i,
+                    (`,
+            sql`) as t ) as rowNums`
+        )
+
+        const { rowNum } = await rowNums
+            .append(`where id = ${ id }`)
+            .one()
+
+        let rows
+
+        if (rowNum == 1) {
+            return [
+                { id: null },
+                ...await rowNums
+                    .append(`limit 2`)
+                    .append(`offset ${ rowNum - 1 }`)
+                    .all()
+            ]
+        } else {
+            rows = await rowNums
+                .append(`limit 3`)
+                .append(`offset ${ rowNum - 2 }`)
+                .all()
+        }
+
+        if (rows.length < 3) { // end of rows
+            rows.push({ id: null })
+        }
+
+        return rows
+    }
 }
 
 export function sql(parts, ...params) {
