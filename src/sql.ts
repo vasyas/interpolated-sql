@@ -100,6 +100,10 @@ export class Sql {
         ).one({ }) as any
     }
 
+    async first(def = undefined): Promise<any> {
+        return this.one(def)
+    }
+
     async one(def = undefined): Promise<any> {
         const rows = await this.all()
 
@@ -223,7 +227,8 @@ export class Sql {
                 ...await rowNums
                     .append(`limit 2`)
                     .append(`offset ${ rowNum - 1 }`)
-                    .all()
+                    .all(),
+                { id: null },
             ]
         } else {
             rows = await rowNums

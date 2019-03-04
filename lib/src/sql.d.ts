@@ -27,6 +27,7 @@ export declare class Sql {
     }>(aggregations: T): Promise<{
         [x in keyof T]: number;
     }>;
+    first(def?: any): Promise<any>;
     one(def?: any): Promise<any>;
     scalar(): Promise<any>;
     private prepareQueryParams();
