@@ -22,7 +22,7 @@ describe("Update", () => {
         })
 
         await exec("drop table test").update()
-        await exec("create table test (boolean tinyint(1), jsonField json)").update()
+        await exec("create table test (boolean tinyint(1), jsonField json, s varchar(256))").update()
         await exec("insert into test set boolean = 0").update()
     })
 
@@ -42,5 +42,21 @@ describe("Update", () => {
         `.update()
 
         expect(rows).eql(0)
+    })
+
+    it("do not update undefined fields", async () => {
+        await exec`
+            update test set ${{ s: "bla" }}
+        `.update()
+
+        await exec`
+            update test set ${{ s: undefined, boolean: 1 }}
+        `.update()
+
+        const r = await exec`
+            select s from test
+        `.scalar()
+
+        expect(r).eql("bla")
     })
 })

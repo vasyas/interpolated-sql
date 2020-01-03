@@ -118,10 +118,12 @@ export class Sql {
         return row[Object.keys(row)[0]]
     }
 
-    // convert undefined to nulls
+    // 1. convert top-level undefined to nulls
+    // 2. drop undefined from query params
     private prepareQueryParams() {
         return this.params
-            .map(p => typeof p == "undefined" ? null : p)
+            .map(p => p === undefined ? null : p)
+            .map(filterOutUndefinedProps)
 
     }
     private prepareQuery() {
@@ -267,4 +269,16 @@ let trace = false
 
 export function enableTrace(enabled) {
     trace = enabled
+}
+
+function filterOutUndefinedProps(o) {
+    if (!o) return o
+
+    for (const key in o) {
+        if (o.hasOwnProperty(key) && o[key] === undefined) {
+            delete o[key]
+        }
+    }
+
+    return o
 }
