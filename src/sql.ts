@@ -259,6 +259,8 @@ export function sql(parts: TemplateStringsArray | string[] | string, ...params: 
   return new Sql(parts, params)
 }
 
+export type SqlBuilder = typeof sql
+
 function interp(parts: string[], ...params: any[]) {
   function str(o: any) {
     if (typeof o == "object" && !(o instanceof Date)) {
