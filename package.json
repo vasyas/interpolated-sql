@@ -10,6 +10,10 @@
     "build": "tsc",
     "test": "mocha -r ts-node/register ./test/**/*.ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vasyas/interpolated-sql.git"
+  },
   "devDependencies": {
     "@types/mocha": "^7.0.1",
     "@types/chai": "^4.2.9",
