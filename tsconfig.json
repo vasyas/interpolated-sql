@@ -2,12 +2,15 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "outDir": "lib",
+    "outDir": "dist",
     "declaration": true,
-    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "sourceMap": true,
     "lib": [
-      "es2017",
-      "dom"
+      "es2017"
     ]
   },
   "include": [
