@@ -15,7 +15,6 @@
     ]
   },
   "include": [
-    "shims.d.ts",
     "src/*.ts"
   ],
   "exclude": [
